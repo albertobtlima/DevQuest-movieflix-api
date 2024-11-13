@@ -12,3 +12,10 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Genre {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(100)
+
+  @@map("genres")
+}
