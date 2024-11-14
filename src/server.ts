@@ -13,7 +13,7 @@ app.get("/movies", async (_, res) => {
       title: "asc",
     },
     include: {
-      Genre: true,
+      genres: true,
       languages: true,
     },
   });
@@ -94,9 +94,9 @@ app.delete("/movies/:id", async (req, res) => {
   res.status(200).send({ message: "Filma deletado" });
 });
 
-app.get("/movies/:genderName", async (req, res) => {
+app.get("/movies/:genreName", async (req, res) => {
   try {
-    const moviesFilteredByGenderName = await prisma.movie.findMany({
+    const moviesFilteredByGenreName = await prisma.movie.findMany({
       include: {
         genres: true,
         languages: true,
@@ -104,16 +104,16 @@ app.get("/movies/:genderName", async (req, res) => {
       where: {
         genres: {
           name: {
-            equals: genderName,
+            equals: req.params.genreName,
             mode: "insensitive",
           },
         },
       },
     });
 
-    res.status(200).send(moviesFilteredByGenderName);
+    res.status(200).send(moviesFilteredByGenreName);
   } catch (error) {
-    return res.status(500).send({error, message: "Falha ao atualizar um filme" });
+    return res.status(500).send({ error, message: "Falha ao atualizar um filme" });
   }
 });
 
